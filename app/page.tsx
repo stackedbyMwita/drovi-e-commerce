@@ -1,58 +1,93 @@
-import { DeployButton } from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { AuthButton } from "@/components/auth-button";
-import { Hero } from "@/components/hero";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
-import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/lib/utils";
-import Link from "next/link";
-import { Suspense } from "react";
+import { Container, FullBleed } from "@/components/common/Container";
+import { Hero } from "@/components/home/Hero";
+import { FeaturedProducts } from "@/components/home/FeaturedProducts";
+import { GenderSection } from "@/components/home/GenderSection";
+import { Footer } from "@/components/home/Footer";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
-              <div className="flex items-center gap-2">
-                <DeployButton />
-              </div>
-            </div>
-            {!hasEnvVars ? (
-              <EnvVarWarning />
-            ) : (
-              <Suspense>
-                <AuthButton />
-              </Suspense>
-            )}
-          </div>
-        </nav>
-        <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-          </main>
-        </div>
+    <main>
+      {/* Hero — full bleed, no container */}
+      <FullBleed>
+        <Hero />
+      </FullBleed>
 
-        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-          <p>
-            Powered by{" "}
+      {/* Value props strip — full bleed dark bar */}
+      <FullBleed className="bg-foreground border-b border-background/10">
+        <Container>
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-background/10">
+            {[
+              { icon: "🚚", title: "Nationwide Delivery", sub: "All 47 counties" },
+              { icon: "↩️", title: "Easy Returns", sub: "30-day return policy" },
+              { icon: "🔒", title: "Secure Checkout", sub: "M-Pesa & Card" },
+              { icon: "⭐", title: "Quality Guaranteed", sub: "Curated pieces only" },
+            ].map(({ icon, title, sub }) => (
+              <div key={title} className="flex items-center gap-3 px-6 py-4">
+                <span className="text-2xl shrink-0">{icon}</span>
+                <div>
+                  <p className="font-sans text-xs font-bold uppercase tracking-widest text-background/80">
+                    {title}
+                  </p>
+                  <p className="font-sans text-[11px] text-background/40 mt-0.5">{sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </FullBleed>
+
+      {/* Featured Products — 6 top picks, 2 rows × 3 */}
+      <Container>
+        <FeaturedProducts />
+      </Container>
+
+      {/* Divider */}
+      <FullBleed className="h-px bg-border" />
+
+      {/* Men's picks */}
+      <Container>
+        <GenderSection gender="men" />
+      </Container>
+
+      {/* Mid-page banner — full bleed red */}
+      <FullBleed className="bg-primary py-14">
+        <Container>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <p className="font-sans text-xs font-bold uppercase tracking-[0.18em] text-primary-foreground/60 mb-2">
+                Limited time
+              </p>
+              <h3 className="font-serif text-3xl md:text-4xl font-bold text-primary-foreground leading-tight">
+                Free delivery on your<br className="hidden md:block" /> first order.
+              </h3>
+            </div>
             <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
+              href="/auth/signup"
+              className="shrink-0 inline-flex items-center gap-2 bg-primary-foreground text-primary px-8 py-4 font-sans font-bold text-sm uppercase tracking-widest hover:bg-primary-foreground/90 transition-colors"
             >
-              Supabase
+              Create Account
             </a>
-          </p>
-          <ThemeSwitcher />
-        </footer>
-      </div>
+          </div>
+        </Container>
+      </FullBleed>
+
+      {/* Women's picks */}
+      <Container>
+        <GenderSection gender="women" />
+      </Container>
+
+      {/* Divider */}
+      <FullBleed className="h-px bg-border" />
+
+      {/* Kids' picks */}
+      <Container>
+        <GenderSection gender="kids" />
+      </Container>
+
+      {/* Footer — full bleed dark */}
+      <FullBleed>
+        <Footer />
+      </FullBleed>
     </main>
   );
 }

@@ -1,11 +1,13 @@
-import { LoginForm } from "@/components/login-form";
+"use client";
 
-export default function Page() {
+import LoginForm from "@/components/auth/LoginForm";
+import { Suspense } from "react";
+
+// useSearchParams() requires a Suspense boundary in Next.js App Router
+export default function LoginPage() {
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
-        <LoginForm />
-      </div>
-    </div>
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <LoginForm />
+    </Suspense>
   );
 }
